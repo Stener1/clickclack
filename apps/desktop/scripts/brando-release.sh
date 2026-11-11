@@ -140,11 +140,11 @@ esac
 REMOTE
   mkdir -p "$out/mac"
   ssh -o BatchMode=yes "$mac_host" \
-    'cd "$HOME/work/clickclack-release/apps/desktop/release-brando" && tar -cf - *.dmg *.zip *.blockmap latest-mac.yml' |
+    'cd "$HOME/work/clickclack-release/apps/desktop/release-brando" && COPYFILE_DISABLE=1 tar -cf - *.dmg *.zip *.blockmap latest-mac.yml' |
     tar -xf - -C "$out/mac"
 fi
 
-mapfile -t payload < <(find "$out" -maxdepth 2 -type f \( -name '*.AppImage' -o -name '*.dmg' -o -name '*.zip' -o -name '*.blockmap' \) | sort)
+mapfile -t payload < <(find "$out" -maxdepth 2 -type f ! -name '._*' \( -name '*.AppImage' -o -name '*.dmg' -o -name '*.zip' -o -name '*.blockmap' \) | sort)
 mapfile -t feeds < <(find "$out" -maxdepth 2 -type f -name 'latest-*.yml' | sort)
 ((${#payload[@]})) || die "nothing was built"
 for f in "${feeds[@]}"; do
