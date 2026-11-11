@@ -89,9 +89,10 @@ fi
 
 if ((build_mac)); then
   echo "brando-release: building macOS ($mac_mode) on $mac_host"
-  # Flags travel as arguments, not as code, so nothing from this side is evaluated remotely.
-  ssh -o BatchMode=yes "$mac_host" bash -s -- "$tag" "$version" "$mac_mode" "$feed" \
-    "${CLICKCLACK_MAC_IDENTITY_QUALIFIER:-}" "$notary_profile" "https://github.com/$repo_slug.git" <<'REMOTE'
+  # Values travel as quoted arguments (ssh joins the command into one string), never as code.
+  remote_args=$(printf ' %q' "$tag" "$version" "$mac_mode" "$feed" \
+    "${CLICKCLACK_MAC_IDENTITY_QUALIFIER:-}" "$notary_profile" "https://github.com/$repo_slug.git")
+  ssh -o BatchMode=yes "$mac_host" "bash -s --$remote_args" <<'REMOTE'
 set -euo pipefail
 tag=$1 version=$2 mode=$3 feed=$4 qualifier=$5 profile=$6 remote=$7
 node_dir="$HOME/.local/opt/node24"
