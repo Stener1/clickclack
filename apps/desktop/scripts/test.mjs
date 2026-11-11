@@ -22,6 +22,17 @@ await build({
 await build({
   absWorkingDir: root,
   bundle: true,
+  entryPoints: ["src/updater-state.test.ts"],
+  format: "cjs",
+  outfile: path.join(root, ".test", "updater-state.test.cjs"),
+  platform: "node",
+  sourcemap: "inline",
+  target: "node22",
+});
+
+await build({
+  absWorkingDir: root,
+  bundle: true,
   entryPoints: ["src/main.ts"],
   external: ["electron"],
   format: "cjs",
@@ -41,6 +52,8 @@ const result = spawnSync(
     releaseArtifactsTest,
     macosSigningTest,
     path.join(root, "scripts", "windows-signing.test.mjs"),
+    path.join(root, ".test", "updater-state.test.cjs"),
+    path.join(root, "scripts", "brando-version.test.mjs"),
   ],
   {
     stdio: "inherit",

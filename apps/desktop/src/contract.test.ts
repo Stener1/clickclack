@@ -226,7 +226,7 @@ test("recovers safely from malformed persisted settings", () => {
     startAtLogin: true,
     window: { width: 120, height: 900, x: 42, maximized: true },
   });
-  assert.equal(settings.serverUrl, "https://app.clickclack.chat");
+  assert.equal(settings.serverUrl, "https://chat.mykvare.com");
   assert.equal(settings.closeToTray, false);
   assert.equal(settings.startAtLogin, true);
   assert.deepEqual(settings.window, {

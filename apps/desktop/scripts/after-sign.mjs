@@ -7,8 +7,10 @@ import { promisify } from "node:util";
 
 const execFile = promisify(execFileCallback);
 
-export const EXPECTED_IDENTITY = "Developer ID Application: OpenClaw Foundation (FWJYW4S8P8)";
-export const EXPECTED_IDENTITY_QUALIFIER = "OpenClaw Foundation (FWJYW4S8P8)";
+// Brando fork: CLICKCLACK_MAC_IDENTITY_QUALIFIER ("Name (TEAMID)") signs with another Developer ID.
+export const EXPECTED_IDENTITY_QUALIFIER =
+  process.env.CLICKCLACK_MAC_IDENTITY_QUALIFIER || "OpenClaw Foundation (FWJYW4S8P8)";
+export const EXPECTED_IDENTITY = `Developer ID Application: ${EXPECTED_IDENTITY_QUALIFIER}`;
 export const NOTARY_RETRY_DELAY_MS = 10 * 60 * 1000;
 
 function commandFailure(error) {

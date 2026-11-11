@@ -40,6 +40,7 @@ import {
   type PublicDesktopSettings,
   type WindowState,
 } from "./contract";
+import { startUpdates, updateMenuItems } from "./updater";
 
 const PROTOCOLS = [LEGACY_DESKTOP_PROTOCOL, DESKTOP_AUTH_PROTOCOL] as const;
 const SETTINGS_FILE = "desktop.json";
@@ -99,6 +100,15 @@ async function start() {
   installDownloadHandling();
   createApplicationMenu();
   createTray();
+  startUpdates({
+    onChange: () => {
+      createApplicationMenu();
+      updateTrayMenu();
+    },
+    beforeInstall: () => {
+      quitting = true;
+    },
+  });
 
   const startupLink = protocolURLFromArgs(process.argv);
   const initialRoute = pendingRoute ?? (startupLink ? deepLinkToRoute(startupLink) : null);
@@ -696,6 +706,7 @@ function createApplicationMenu() {
       label: APP_NAME,
       submenu: [
         { role: "about" },
+        ...updateMenuItems(),
         { type: "separator" },
         { label: "Settings…", accelerator: "CmdOrCtrl+,", click: createSettingsWindow },
         { type: "separator" },
@@ -788,6 +799,7 @@ function updateTrayMenu() {
       { type: "separator" },
       { enabled: false, label },
       { label: "Settings…", click: createSettingsWindow },
+      ...updateMenuItems(),
       { type: "separator" },
       {
         label: "Quit",

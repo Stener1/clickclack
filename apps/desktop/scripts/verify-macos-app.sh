@@ -3,6 +3,12 @@ set -euo pipefail
 
 expected_identity='Developer ID Application: OpenClaw Foundation (FWJYW4S8P8)'
 expected_team='FWJYW4S8P8'
+# Brando fork: CLICKCLACK_MAC_IDENTITY_QUALIFIER ("Name (TEAMID)") verifies another Developer ID.
+if [[ -n "${CLICKCLACK_MAC_IDENTITY_QUALIFIER:-}" ]]; then
+  expected_identity="Developer ID Application: $CLICKCLACK_MAC_IDENTITY_QUALIFIER"
+  expected_team=${CLICKCLACK_MAC_IDENTITY_QUALIFIER##*(}
+  expected_team=${expected_team%)}
+fi
 expected_bundle_id='chat.clickclack.desktop'
 requirement="identifier \"$expected_bundle_id\" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] exists and certificate leaf[field.1.2.840.113635.100.6.1.13] exists and certificate leaf[subject.OU] = \"$expected_team\""
 require_notarized=0

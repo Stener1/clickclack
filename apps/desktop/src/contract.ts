@@ -1,4 +1,5 @@
-export const DEFAULT_SERVER_URL = "https://app.clickclack.chat";
+// Brando fork: new installs open the team server.
+export const DEFAULT_SERVER_URL = "https://chat.mykvare.com";
 export const DEFAULT_APP_ROUTE = "/app";
 export const DESKTOP_SERVER_ORIGIN_ARG = "--clickclack-server-origin=";
 export const DESKTOP_TITLEBAR_ARG = "--clickclack-integrated-titlebar";

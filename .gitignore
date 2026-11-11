@@ -3,6 +3,7 @@ apps/web/dist/
 apps/web/.svelte-kit/
 apps/desktop/.test/
 apps/desktop/release/
+apps/desktop/release-brando/
 packages/sdk-ts/dist/
 dist/
 !apps/api/internal/webassets/dist/
